@@ -11,16 +11,32 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "ourusers")
-public class OurUsers implements UserDetails {
+@Table(name = "user")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String email;
+
+    @Column(name = "prenom")
+    private String prenom;
+
+    @Column(name = "nom")
+    private String nom;
+
+    @Column(name = "tel")
+    private String tel;
+
+    @Column(name = "login", unique = true)
+    private String login;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
     private String role;
 
-
+    @Column(name = "etat")
+    private String etat;
 
 
     @Override
@@ -31,7 +47,7 @@ public class OurUsers implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 
     @Override

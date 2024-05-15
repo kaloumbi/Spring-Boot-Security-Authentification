@@ -1,9 +1,10 @@
 package com.abs.SpringSecurityJWT.service;
 
 
-import com.abs.SpringSecurityJWT.dto.ReqRes;
-import com.abs.SpringSecurityJWT.enitty.OurUsers;
-import com.abs.SpringSecurityJWT.repository.OurUserRepo;
+import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
+import com.abs.SpringSecurityJWT.enitty.User;
+import com.abs.SpringSecurityJWT.enums.ETAT_USER;
+import com.abs.SpringSecurityJWT.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 public class AuthService {
 
     @Autowired
-    private OurUserRepo ourUserRepo;
+    private UserRepo userRepo;
 
     @Autowired
     private JWTUtils jwtUtils;
@@ -28,20 +29,24 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
 
-    public ReqRes signUp(ReqRes registrationRequest){
-        ReqRes resp = new ReqRes();
+    public UserReqResDTO signUp(UserReqResDTO registrationRequest){
+        UserReqResDTO resp = new UserReqResDTO();
 
         try {
-            OurUsers ourUsers = new OurUsers();
+            User user = new User();
 
-            ourUsers.setEmail(registrationRequest.getEmail());
-            ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            ourUsers.setRole(registrationRequest.getRole());
+            user.setPrenom(registrationRequest.getPrenom());
+            user.setNom(registrationRequest.getNom());
+            user.setTel(registrationRequest.getTel());
+            user.setLogin(registrationRequest.getLogin());
+            user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            user.setRole(registrationRequest.getRole());
+            user.setEtat(ETAT_USER.ACTIF.toString());
 
-            OurUsers ourUserResult = ourUserRepo.save(ourUsers);
+            User userResult = userRepo.save(user);
 
-            if (ourUserResult != null && ourUserResult.getId() > 0){
-                resp.setOurUsers(ourUserResult);
+            if (userResult != null && userResult.getId() > 0){
+                resp.setUsers(userResult);
                 resp.setMessage("User Save Successfully");
                 resp.setStatusCode(200);
             }
@@ -55,12 +60,12 @@ public class AuthService {
     }
 
 
-    public ReqRes signIn(ReqRes signinRequest){
-        ReqRes response = new ReqRes();
+    public UserReqResDTO signIn(UserReqResDTO signinRequest){
+        UserReqResDTO response = new UserReqResDTO();
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(), signinRequest.getPassword() ));
-            var user = ourUserRepo.findByEmail(signinRequest.getEmail()).orElseThrow();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getLogin(), signinRequest.getPassword() ));
+            var user = userRepo.findByLogin(signinRequest.getLogin()).orElseThrow();
             System.out.println("USER IS : "+ user);
             var jwt = jwtUtils.generateToken(user);
             var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
@@ -78,10 +83,10 @@ public class AuthService {
 
     }
 
-    public ReqRes refreshToken(ReqRes refreshTokenRequest){
-        ReqRes response = new ReqRes();
+    public UserReqResDTO refreshToken(UserReqResDTO refreshTokenRequest){
+        UserReqResDTO response = new UserReqResDTO();
         String ourEmail = jwtUtils.extractUsername(refreshTokenRequest.getToken());
-        OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
+        User users = userRepo.findByLogin(ourEmail).orElseThrow();
 
         if (jwtUtils.isTokenValid(refreshTokenRequest.getToken(), users )){
             var jwt = jwtUtils.generateToken(users);
@@ -95,6 +100,8 @@ public class AuthService {
         response.setStatusCode(500);
         return response;
     }
+
+
 
 }
 

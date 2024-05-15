@@ -1,7 +1,7 @@
 package com.abs.SpringSecurityJWT.config;
 
 import com.abs.SpringSecurityJWT.service.JWTUtils;
-import com.abs.SpringSecurityJWT.service.OurUserDetailsService;
+import com.abs.SpringSecurityJWT.service.UserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private JWTUtils jwtUtils;
 
     @Autowired
-    private OurUserDetailsService ourUserDetailsService;
+    private UserDetailsService ourUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
