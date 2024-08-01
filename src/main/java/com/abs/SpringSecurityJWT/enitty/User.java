@@ -15,7 +15,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "prenom")
     private String prenom;
@@ -23,7 +23,7 @@ public class User implements UserDetails {
     @Column(name = "nom")
     private String nom;
 
-    @Column(name = "tel")
+    @Column(name = "tel", unique = true)
     private String tel;
 
     @Column(name = "login", unique = true)

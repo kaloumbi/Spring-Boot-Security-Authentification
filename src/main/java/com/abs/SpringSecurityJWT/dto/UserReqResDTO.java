@@ -9,6 +9,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserReqResDTO {
+    private Long id;
 
     private int statusCode;
 

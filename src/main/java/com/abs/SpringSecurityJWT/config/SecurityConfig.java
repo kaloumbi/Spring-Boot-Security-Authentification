@@ -46,7 +46,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(request -> request.requestMatchers(mvc.pattern("/auth"), mvc.pattern("/public/**"), mvc.pattern("/auth/signup"), mvc.pattern("/auth/signin")).permitAll()
+                .authorizeHttpRequests(request -> request.requestMatchers(mvc.pattern("/auth/**"), mvc.pattern("/public/**")).permitAll()
                         .requestMatchers(mvc.pattern("/admin/**")).hasAnyAuthority("ADMIN")
                         .requestMatchers(mvc.pattern("/user/**")).hasAnyAuthority("USER")
                         .requestMatchers(mvc.pattern("/adminuser/**")).hasAnyAuthority("USER", "ADMIN")
