@@ -1,16 +1,14 @@
 package com.abs.SpringSecurityJWT.controller;
 
 
+import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
-import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.notFoundExceptionClass.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,9 +26,9 @@ public class UserController {
      * ************* LISTER TOUS LES UTILISATEURS *********************
      */
     @GetMapping("/users")
-    ResponseEntity<List<UserReqResDTO>> getAllUsers(){
+    ResponseEntity<List<UserGetDTO>> getAllUsers() throws Exception {
         // Appeler le service pour obtenir la liste des utilisateurs convertis en DTO
-        List<UserReqResDTO> userListDto = userService.listUsers();
+        List<UserGetDTO> userListDto = userService.listUsers();
 
         // Retourner la liste des DTO dans la réponse HTTP
         return ResponseEntity.ok(userListDto);
@@ -97,7 +95,7 @@ public class UserController {
      * LA RECHERCHE DES UTILISATEURS
      */
 
-    @GetMapping("/users/list")
+    @GetMapping("/users/list/search")
     public ResponseEntity<List<UserReqResDTO>> listUsersSearched (@RequestParam String prenom){
 
         List<UserReqResDTO> listUsersByPrenomDto = userService.searcheUsers(prenom);

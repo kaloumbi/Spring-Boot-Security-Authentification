@@ -1,21 +1,18 @@
 package com.abs.SpringSecurityJWT.dto;
 
-import com.abs.SpringSecurityJWT.enitty.Event;
 import com.abs.SpringSecurityJWT.enitty.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserReqResDTO {
+public class UserGetDTO {
+
     private Long id;
 
     private int statusCode;
@@ -29,12 +26,10 @@ public class UserReqResDTO {
     private String nom;
     private String login;
     private String tel;
-    private String password;
+    //private String password;
     private String role;
     private String etat;
     private User users;
-    //private List<Event> events;
 
     private List<EventDTO> events;
-
 }

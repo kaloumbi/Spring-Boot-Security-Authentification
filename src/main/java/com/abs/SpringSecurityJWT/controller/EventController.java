@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.controller;
 
 import com.abs.SpringSecurityJWT.dto.EventDTO;
+import com.abs.SpringSecurityJWT.enitty.Event;
 import com.abs.SpringSecurityJWT.notFoundExceptionClass.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,9 @@ public class EventController {
 
         try {
             EventDTO eventDetail = eventService.detailEvent(id);
-            return ResponseEntity.ok(eventDetail);
+            return new ResponseEntity<>(eventDetail, HttpStatus.OK);
         }catch (MyNotFoundExceptionClass ex){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucune Methode !");
+            return new ResponseEntity<>("Aucun obet trouvé !" ,HttpStatus.NOT_FOUND);
         }
     }
 
@@ -60,6 +61,34 @@ public class EventController {
             EventDTO eventUpDto = eventService.updateEvent(id, eventDTO);
 
             return ResponseEntity.ok(eventUpDto);
+    }
+
+    @DeleteMapping("event/{id}/delete")
+    public ResponseEntity<String> deleteEvent(@PathVariable Long id){
+
+        try {
+            // Essayer de supprimer l'événement
+            eventService.deleteEvent(id);
+            // Si tout se passe bien, renvoyer une réponse de succès
+            return new ResponseEntity<>("Événement supprimé avec succès.", HttpStatus.OK);
+
+        } catch (MyNotFoundExceptionClass ex) {
+            // Exception spécifique pour l'événement non trouvé
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+
+        } catch (Exception ex) {
+            // Gestion des autres exceptions
+            return new ResponseEntity<>("Une erreur est survenue lors de la suppression de l'événement.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping("events/search")
+    public ResponseEntity<List<EventDTO>> searchEventByName(@RequestParam String nom){
+
+        List<EventDTO> eventDTOList = eventService.searchEvents(nom);
+
+        return ResponseEntity.ok(eventDTOList);
     }
 
 

@@ -1,19 +1,27 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
+import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_USER;
+import com.abs.SpringSecurityJWT.mapper.EventMapper;
+import com.abs.SpringSecurityJWT.mapper.UserGetMapper;
 import com.abs.SpringSecurityJWT.mapper.UserMapper;
 import com.abs.SpringSecurityJWT.notFoundExceptionClass.MyNotFoundExceptionClass;
+import com.abs.SpringSecurityJWT.repository.EventRepo;
 import com.abs.SpringSecurityJWT.repository.UserRepo;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class UserServiceImpl implements UserService{
 
     @Autowired
@@ -22,11 +30,28 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserMapper userMapper;
 
-    @Override
-    public List<UserReqResDTO> listUsers() {
-        List<User> users = userRepo.findAll();
+    @Autowired
+    private EventMapper eventMapper;
 
-        return  userMapper.toDto(users);
+    @Autowired
+    private UserGetMapper userGetMapper;
+
+    @Autowired
+    private EventRepo eventRepo;
+
+    @Override
+    public List<UserGetDTO> listUsers() throws Exception {
+        //System.out.println("###########################");
+        List<User> users = userRepo.findAll();
+        //System.out.println("###########################");
+        if (1 == 1) {
+            throw new MyNotFoundExceptionClass("Envoie mon message");
+        }
+
+        users.forEach(user -> {
+          //  System.out.println("les events"+ user.getId()   );
+        });
+        return  userGetMapper.toDto(users);
     }
 
     @Override
@@ -48,7 +73,7 @@ public class UserServiceImpl implements UserService{
         }
 
         // Mettre à jour les propriétés de userFound avec les valeurs de userReqResDTO
-        userMapper.toEntity(userReqResDTO);
+        userFound = userMapper.toEntity(userReqResDTO);
 
         // Sauvegarder les modifications
         userRepo.save(userFound);
@@ -89,6 +114,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserReqResDTO detailUser(Long id) {
+        //ÇA PEUT EXISTER OUBIEN ÇA PEUT NE PAS EXISTER D'OÙ OPTIONAL
         Optional<User> userSearched = userRepo.findById(id);
 
         if (userSearched.isEmpty()){
@@ -99,5 +125,23 @@ public class UserServiceImpl implements UserService{
 
         return userMapper.toDto(userFound);
     }
+
+    //recuperer l'utilisateur connecté
+    @Override
+    public User getAuthenticatedUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        log.info("AUTH ::: {}", auth);
+        if (Objects.isNull(auth) || AnonymousAuthenticationToken.class.isAssignableFrom(auth.getClass())) {
+            return null;
+        }
+        //
+        log.info("AUTH NAME::: {}", auth.getName());
+        Optional<User> userConnecte = userRepo.findByLogin(auth.getName());
+        log.info("USER CONNECT::: {}", userConnecte);
+
+
+        return userConnecte.orElse(null);
+    }
+
 
 }

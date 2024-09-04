@@ -17,6 +17,12 @@ public interface MyEntityManager <D, E> {
 
     List<D> toDto(List<E> entityList);
 
+    /*@Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget D dto, E entity);*/
+
+
+    //@MappingTarget => montre que l'entity est la cible de la mise à jour
     @Named("partialUpdate")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void partialUpdate(@MappingTarget E entity, D dto);

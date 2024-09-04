@@ -1,13 +1,13 @@
 package com.abs.SpringSecurityJWT.enitty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Entity
@@ -37,6 +37,21 @@ public class User implements UserDetails {
 
     @Column(name = "etat")
     private String etat;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Event> events = new ArrayList<>();
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Override

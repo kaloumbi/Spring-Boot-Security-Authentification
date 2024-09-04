@@ -24,15 +24,27 @@ public class EventServiceImpl implements EventService{
     @Autowired
     private EventMapper eventMapper;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public EventDTO addEvent(EventDTO eventDTO) {
 
         //mapper le dto event en objet
         Event eventToAdd = eventMapper.toEntity(eventDTO);
 
+        //Appel de la fonction pour trouver l'utisateur connecté
+        User userConnectedFound = userService.getAuthenticatedUser();
+
         //ensuite sauvegarder en base
         eventToAdd.setDate(new Date());
         eventToAdd.setEtat(ETAT_EVENT.ACTIF.toString());
+
+        if (userConnectedFound == null){
+            return null;
+        }
+
+        eventToAdd.setUser(userConnectedFound);
         Event eventStored = eventRepo.save(eventToAdd);
 
         //le mapper en dto puis le renvoyé
@@ -66,6 +78,9 @@ public class EventServiceImpl implements EventService{
     @Override
     public EventDTO updateEvent(Long id, EventDTO eventDTO) {
 
+        //Appel de la fonction pour trouver l'utisateur connecté
+        User userConnectedFound = userService.getAuthenticatedUser();
+
         Optional<Event> eventSearched = eventRepo.findById(id);
 
         if (eventSearched.isEmpty()){
@@ -74,14 +89,53 @@ public class EventServiceImpl implements EventService{
 
         Event eventFound = eventSearched.get();
 
-        //prendre les nouvelles valeurs du dto
+        //si id dto est null prends l'id l'objet trouvé
+        if (eventDTO.getId() == null){
+            eventDTO.setId(eventFound.getId());
+        }
+
+
+        // Convertir le DTO en entité
         eventFound = eventMapper.toEntity(eventDTO);
 
-        //les sauvegarder
+        //recuperer l'id de l'utilisateur qui a modifie
+        eventFound.setUser(userConnectedFound);
+
+        // Sauvegarder l'entité mise à jour
         eventRepo.save(eventFound);
 
-        //renvoyer le dto
-        return  eventMapper.toDto(eventFound);
+        // Renvoyer le DTO
+        return eventMapper.toDto(eventFound);
+    }
+
+
+    //Function me permettant de supprimer un evenement
+    @Override
+    public void deleteEvent(Long id) {
+
+        Optional<Event> searchEvent = eventRepo.findById(id);
+
+        if (searchEvent.isEmpty()){
+            throw new MyNotFoundExceptionClass("Aucun utilisateur trouvé avec l'identifiant " + id + " fourni !");
+        }
+
+        Event eventFound = searchEvent.get();
+        eventFound.setEtat(ETAT_EVENT.SUPPRIME.toString());
+
+        eventRepo.save(eventFound);
+    }
+
+
+    @Override
+    public List<EventDTO> searchEvents(String nom) {
+
+        List<Event> listEventsSearch = eventRepo.findByNom(nom);
+
+
+        return eventMapper.toDto(listEventsSearch);
 
     }
+
+
+
 }

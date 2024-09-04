@@ -1,5 +1,6 @@
 package com.abs.SpringSecurityJWT.dto;
 
+import com.abs.SpringSecurityJWT.enitty.User;
 import jakarta.persistence.Column;
 import lombok.Data;
 
@@ -19,4 +20,5 @@ public class EventDTO {
     private String description;
 
     private String etat;
+
 }
