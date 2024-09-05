@@ -1,20 +1,15 @@
 package com.abs.SpringSecurityJWT.enitty;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table
 @Data
-public class CategoryCot {
+public class Association {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +23,6 @@ public class CategoryCot {
     @Column(name = "etat")
     private String etat;
 
-    @OneToMany(mappedBy = "categoryCot", fetch = FetchType.LAZY)
-    private List<Cotisation> cotisations = new ArrayList<>() ;
+    @OneToMany(mappedBy = "association", fetch = FetchType.LAZY)
+    private List<Cotisation> cotisations = new ArrayList<>();
 }

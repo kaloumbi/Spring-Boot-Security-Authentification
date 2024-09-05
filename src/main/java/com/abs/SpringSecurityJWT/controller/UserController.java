@@ -3,7 +3,7 @@ package com.abs.SpringSecurityJWT.controller;
 
 import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
-import com.abs.SpringSecurityJWT.notFoundExceptionClass.MyNotFoundExceptionClass;
+import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

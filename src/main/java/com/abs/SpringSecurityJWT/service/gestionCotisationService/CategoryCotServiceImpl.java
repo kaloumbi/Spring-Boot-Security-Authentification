@@ -1,11 +1,13 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.CategoryCotDTO;
+import com.abs.SpringSecurityJWT.dto.CategoryGetResponseDTO;
 import com.abs.SpringSecurityJWT.enitty.CategoryCot;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
 import com.abs.SpringSecurityJWT.mapper.CategoryCotMapper;
-import com.abs.SpringSecurityJWT.notFoundExceptionClass.MyNotFoundExceptionClass;
+import com.abs.SpringSecurityJWT.mapper.CategoryGetResponseMapper;
+import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.CategoryCotRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,27 +25,30 @@ public class CategoryCotServiceImpl implements CategoryCotService {
     @Autowired
     private CategoryCotMapper categoryCotMapper;
 
+    @Autowired
+    private CategoryGetResponseMapper categoryGetResponseMapper;
+
     @Override
-    public CategoryCotDTO addCategoryCot(CategoryCotDTO categoryCotDTO) {
+    public CategoryGetResponseDTO addCategoryCot(CategoryCotDTO categoryCotDTO) {
 
         CategoryCot catAdded = categoryCotMapper.toEntity(categoryCotDTO);
 
         catAdded.setEtat(ETAT_COTISATION.ACTIF.toString());
         catAdded = categoryCotRepo.save(catAdded);
 
-        return categoryCotMapper.toDto(catAdded);
+        return categoryGetResponseMapper.toDto(catAdded);
 
     }
 
     @Override
-    public List<CategoryCotDTO> listeCategories() {
+    public List<CategoryGetResponseDTO> listeCategories() {
         List<CategoryCot> categoryCotList = categoryCotRepo.findAll();
 
-        return categoryCotMapper.toDto(categoryCotList);
+        return categoryGetResponseMapper.toDto(categoryCotList);
     }
 
     @Override
-    public CategoryCotDTO getCategory(Long id) {
+    public CategoryGetResponseDTO getCategory(Long id) {
         Optional<CategoryCot> detailCatCot = categoryCotRepo.findById(id);
 
         if (detailCatCot.isEmpty()){
@@ -51,7 +56,7 @@ public class CategoryCotServiceImpl implements CategoryCotService {
         }
 
         CategoryCot catDetail = detailCatCot.get();
-        return categoryCotMapper.toDto(catDetail);
+        return categoryGetResponseMapper.toDto(catDetail);
     }
 
     @Override
@@ -90,7 +95,7 @@ public class CategoryCotServiceImpl implements CategoryCotService {
     }
 
     @Override
-    public List<CategoryCotDTO> searchCategoryByName(String nom) {
+    public List<CategoryGetResponseDTO> searchCategoryByName(String nom) {
         return List.of();
     }
 }

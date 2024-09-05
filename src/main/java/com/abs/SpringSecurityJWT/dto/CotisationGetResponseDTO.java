@@ -1,18 +1,13 @@
 package com.abs.SpringSecurityJWT.dto;
 
-import com.abs.SpringSecurityJWT.enitty.CategoryCot;
 import com.abs.SpringSecurityJWT.enums.ModeDePaiement;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class CotisationDTO {
-
+public class CotisationGetResponseDTO {
     private Long id;
 
     private BigDecimal montant;
@@ -22,9 +17,4 @@ public class CotisationDTO {
     private ModeDePaiement modeDePaiement;
 
     private String etat;
-
-    private CategoryCotDTO categoryCot;
-
-    private AssociationDTO association;
-
 }

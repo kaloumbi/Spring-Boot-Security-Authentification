@@ -1,16 +1,18 @@
 package com.abs.SpringSecurityJWT.dto;
 
-import com.abs.SpringSecurityJWT.enitty.Cotisation;
+import com.abs.SpringSecurityJWT.enitty.Association;
+import jakarta.persistence.Column;
 import lombok.Data;
 
-import java.util.List;
-
-
 @Data
-public class CategoryCotDTO {
+public class AssociationDTO {
 
     private Long id;
+
     private String nom;
+
     private String description;
+
     private String etat;
+
 }

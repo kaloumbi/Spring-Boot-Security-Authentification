@@ -33,4 +33,12 @@ public class Cotisation {
 
     @Column(name = "etat")
     private String etat;
+
+    @ManyToOne
+    @JoinColumn(name = "categoryCot_id", referencedColumnName = "id")
+    private CategoryCot categoryCot;
+
+    @ManyToOne
+    @JoinColumn(name = "association_id", referencedColumnName = "id")
+    private Association association;
 }

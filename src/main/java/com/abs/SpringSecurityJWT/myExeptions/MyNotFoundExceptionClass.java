@@ -1,4 +1,4 @@
-package com.abs.SpringSecurityJWT.notFoundExceptionClass;
+package com.abs.SpringSecurityJWT.myExeptions;
 
 public class MyNotFoundExceptionClass extends RuntimeException{
 

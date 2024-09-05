@@ -1,8 +1,7 @@
 package com.abs.SpringSecurityJWT.controller;
 
 import com.abs.SpringSecurityJWT.dto.EventDTO;
-import com.abs.SpringSecurityJWT.enitty.Event;
-import com.abs.SpringSecurityJWT.notFoundExceptionClass.MyNotFoundExceptionClass;
+import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

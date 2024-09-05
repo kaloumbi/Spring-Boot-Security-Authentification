@@ -7,7 +7,7 @@ import com.abs.SpringSecurityJWT.enums.ETAT_USER;
 import com.abs.SpringSecurityJWT.mapper.EventMapper;
 import com.abs.SpringSecurityJWT.mapper.UserGetMapper;
 import com.abs.SpringSecurityJWT.mapper.UserMapper;
-import com.abs.SpringSecurityJWT.notFoundExceptionClass.MyNotFoundExceptionClass;
+import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.EventRepo;
 import com.abs.SpringSecurityJWT.repository.UserRepo;
 import lombok.extern.log4j.Log4j2;
@@ -40,17 +40,12 @@ public class UserServiceImpl implements UserService{
     private EventRepo eventRepo;
 
     @Override
-    public List<UserGetDTO> listUsers() throws Exception {
-        //System.out.println("###########################");
+    public List<UserGetDTO> listUsers(){
         List<User> users = userRepo.findAll();
-        //System.out.println("###########################");
-        if (1 == 1) {
-            throw new MyNotFoundExceptionClass("Envoie mon message");
-        }
 
-        users.forEach(user -> {
-          //  System.out.println("les events"+ user.getId()   );
-        });
+//        users.forEach(user -> {
+//          //  System.out.println("les events"+ user.getId()   );
+//        });
         return  userGetMapper.toDto(users);
     }
 

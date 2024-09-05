@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
 
 
-    List<UserGetDTO> listUsers() throws Exception ;
+    List<UserGetDTO> listUsers();
 
     UserReqResDTO updateUser(Long id, UserReqResDTO userReqResDTO);
 
