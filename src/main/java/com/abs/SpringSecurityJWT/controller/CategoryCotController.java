@@ -1,8 +1,6 @@
 package com.abs.SpringSecurityJWT.controller;
 
 import com.abs.SpringSecurityJWT.dto.CategoryCotDTO;
-import com.abs.SpringSecurityJWT.dto.CategoryGetResponseDTO;
-import com.abs.SpringSecurityJWT.enitty.CategoryCot;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.CategoryCotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,23 +18,23 @@ public class CategoryCotController {
 
 
     @PostMapping("/category/added")
-    public ResponseEntity<CategoryGetResponseDTO> addCategory(@RequestBody CategoryCotDTO categoryCotDTO){
+    public ResponseEntity<CategoryCotDTO> addCategory(@RequestBody CategoryCotDTO categoryCotDTO){
 
-        CategoryGetResponseDTO catCot = categoryCotService.addCategoryCot(categoryCotDTO);
+        CategoryCotDTO catCot = categoryCotService.addCategoryCot(categoryCotDTO);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(catCot);
     }
 
 
     @GetMapping("/categories/list")
-    public ResponseEntity<List<CategoryGetResponseDTO>> listCat(){
-        List<CategoryGetResponseDTO> categoryCotDTOList = categoryCotService.listeCategories();
+    public ResponseEntity<List<CategoryCotDTO>> listCat(){
+        List<CategoryCotDTO> categoryCotDTOList = categoryCotService.listeCategories();
         return new ResponseEntity<>(categoryCotDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/category/{id}/detail")
-    public ResponseEntity<CategoryGetResponseDTO> detailCat(@PathVariable Long id){
-        CategoryGetResponseDTO detailCateg = categoryCotService.getCategory(id);
+    public ResponseEntity<CategoryCotDTO> detailCat(@PathVariable Long id){
+        CategoryCotDTO detailCateg = categoryCotService.getCategory(id);
 
         return new ResponseEntity<>(detailCateg, HttpStatus.OK);
     }

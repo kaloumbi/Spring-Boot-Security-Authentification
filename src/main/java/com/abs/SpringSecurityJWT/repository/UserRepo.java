@@ -14,7 +14,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     List<User> findByPrenomStartingWith (String prenom);
 
-    @Query("select u from User u left join fetch u.events")
-    List<User> findAllWithEvents();
+//    @Query("select u from User u left join fetch u.events")
+//    List<User> findAllWithEvents();
 
 }

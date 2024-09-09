@@ -23,6 +23,5 @@ public class Association {
     @Column(name = "etat")
     private String etat;
 
-    @OneToMany(mappedBy = "association", fetch = FetchType.LAZY)
-    private List<Cotisation> cotisations = new ArrayList<>();
+
 }

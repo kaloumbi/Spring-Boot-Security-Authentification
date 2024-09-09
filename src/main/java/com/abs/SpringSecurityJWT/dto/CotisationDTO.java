@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.dto;
 
 import com.abs.SpringSecurityJWT.enitty.CategoryCot;
+import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ModeDePaiement;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -26,5 +27,7 @@ public class CotisationDTO {
     private CategoryCotDTO categoryCot;
 
     private AssociationDTO association;
+
+    private UserReqResDTO user;
 
 }

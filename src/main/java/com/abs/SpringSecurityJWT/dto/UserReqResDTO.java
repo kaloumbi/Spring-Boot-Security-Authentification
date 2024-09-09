@@ -1,5 +1,6 @@
 package com.abs.SpringSecurityJWT.dto;
 
+import com.abs.SpringSecurityJWT.enitty.Association;
 import com.abs.SpringSecurityJWT.enitty.Event;
 import com.abs.SpringSecurityJWT.enitty.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,8 +34,10 @@ public class UserReqResDTO {
     private String role;
     private String etat;
     private User users;
-    //private List<Event> events;
-
-    private List<EventDTO> events;
+//    //private List<Event> events;
+//
+//    private List<EventDTO> events;
+//
+    private List<AssociationDTO> associations = new ArrayList<>() ;
 
 }

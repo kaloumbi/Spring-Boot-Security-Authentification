@@ -2,7 +2,6 @@ package com.abs.SpringSecurityJWT.controller;
 
 
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
-import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.repository.UserRepo;
 import com.abs.SpringSecurityJWT.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")

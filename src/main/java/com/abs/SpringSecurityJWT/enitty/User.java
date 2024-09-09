@@ -38,8 +38,19 @@ public class User implements UserDetails {
     @Column(name = "etat")
     private String etat;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Event> events = new ArrayList<>();
+
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_association",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "association_id", referencedColumnName = "id")
+    )
+    private List<Association> associations = new ArrayList<>() ;
+
+
+
 
 
 

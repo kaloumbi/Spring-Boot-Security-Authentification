@@ -28,6 +28,4 @@ public class CategoryCot {
     @Column(name = "etat")
     private String etat;
 
-    @OneToMany(mappedBy = "categoryCot", fetch = FetchType.LAZY)
-    private List<Cotisation> cotisations = new ArrayList<>() ;
 }

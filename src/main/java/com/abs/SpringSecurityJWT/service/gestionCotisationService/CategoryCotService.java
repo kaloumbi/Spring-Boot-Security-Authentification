@@ -1,21 +1,20 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.CategoryCotDTO;
-import com.abs.SpringSecurityJWT.dto.CategoryGetResponseDTO;
 
 import java.util.List;
 
 public interface CategoryCotService {
 
-    CategoryGetResponseDTO addCategoryCot(CategoryCotDTO categoryCotDTO);
+    CategoryCotDTO addCategoryCot(CategoryCotDTO categoryCotDTO);
 
-    List<CategoryGetResponseDTO> listeCategories();
+    List<CategoryCotDTO> listeCategories();
 
-    CategoryGetResponseDTO getCategory(Long id);
+    CategoryCotDTO getCategory(Long id);
 
     CategoryCotDTO updateCategory(Long id, CategoryCotDTO categoryCotDTO);
 
     void deleteCategory(Long id);
 
-    List<CategoryGetResponseDTO> searchCategoryByName(String nom);
+    List<CategoryCotDTO> searchCategoryByName(String nom);
 }

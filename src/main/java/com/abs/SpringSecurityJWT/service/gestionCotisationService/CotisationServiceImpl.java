@@ -1,10 +1,9 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.CotisationDTO;
-import com.abs.SpringSecurityJWT.dto.CotisationGetResponseDTO;
 import com.abs.SpringSecurityJWT.enitty.Cotisation;
+import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
-import com.abs.SpringSecurityJWT.mapper.CotisationGetResponseMapper;
 import com.abs.SpringSecurityJWT.mapper.CotisationMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.CotisationRepo;
@@ -22,30 +21,41 @@ public class CotisationServiceImpl implements CotisationService{
     private CotisationRepo cotisationRepo;
 
     @Autowired
-    private CotisationMapper cotisationMapper;
+    private UserService userService;
 
     @Autowired
-    private CotisationGetResponseMapper cotisationGetResponseMapper;
+    private CotisationMapper cotisationMapper;
+
 
 
     @Override
-    public CotisationGetResponseDTO addCotisation(CotisationDTO cotisationDTO) {
+    public CotisationDTO addCotisation(CotisationDTO cotisationDTO) {
 
         Cotisation addCot = cotisationMapper.toEntity(cotisationDTO);
+
+        //Appel de la fonction pour trouver l'utisateur connecté
+        User userConnectedFound = userService.getAuthenticatedUser();
+
+        if (userConnectedFound == null){
+            return null;
+        }
+        addCot.setUser(userConnectedFound);
+
         addCot.setEtat(ETAT_SHARED.ACTIF.toString());
         addCot = cotisationRepo.save(addCot);
 
-        return cotisationGetResponseMapper.toDto(addCot);
+        return cotisationMapper.toDto(addCot);
     }
 
     @Override
-    public List<CotisationGetResponseDTO> listeCotisations() {
+    public List<CotisationDTO> listeCotisations() {
         List<Cotisation> cotisationList = cotisationRepo.findAll();
-        return cotisationGetResponseMapper.toDto(cotisationList);
+
+        return cotisationMapper.toDto(cotisationList);
     }
 
     @Override
-    public CotisationGetResponseDTO detailCotisation(Long id) {
+    public CotisationDTO detailCotisation(Long id) {
 
         Optional<Cotisation> cotisationSearch = cotisationRepo.findById(id);
 
@@ -55,11 +65,11 @@ public class CotisationServiceImpl implements CotisationService{
 
         Cotisation cotisationFound = cotisationSearch.get();
 
-        return cotisationGetResponseMapper.toDto(cotisationFound);
+        return cotisationMapper.toDto(cotisationFound);
     }
 
     @Override
-    public CotisationGetResponseDTO updateCotisation(Long id, CotisationDTO cotisationDTO) {
+    public CotisationDTO updateCotisation(Long id, CotisationDTO cotisationDTO) {
         Optional<Cotisation> cotisationSearch = cotisationRepo.findById(id);
 
         if (cotisationSearch.isEmpty()){
@@ -75,7 +85,7 @@ public class CotisationServiceImpl implements CotisationService{
 
         cotisationRepo.save(cotisationFound);
 
-        return cotisationGetResponseMapper.toDto(cotisationFound);
+        return cotisationMapper.toDto(cotisationFound);
     }
 
     @Override
@@ -93,7 +103,7 @@ public class CotisationServiceImpl implements CotisationService{
     }
 
     @Override
-    public List<CotisationGetResponseDTO> searchCotisations(String nom) {
+    public List<CotisationDTO> searchCotisations(String nom) {
         return List.of();
     }
 }

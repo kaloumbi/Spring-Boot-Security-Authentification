@@ -1,9 +1,12 @@
 package com.abs.SpringSecurityJWT.service;
 
 
+import com.abs.SpringSecurityJWT.dto.AssociationDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
+import com.abs.SpringSecurityJWT.enitty.Association;
 import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_USER;
+import com.abs.SpringSecurityJWT.repository.AssociationRepo;
 import com.abs.SpringSecurityJWT.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,7 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -28,6 +33,9 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private AssociationRepo associationRepo;
+
 
     public UserReqResDTO signUp(UserReqResDTO registrationRequest){
         UserReqResDTO resp = new UserReqResDTO();
@@ -42,6 +50,23 @@ public class AuthService {
             user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
             user.setRole(registrationRequest.getRole());
             user.setEtat(ETAT_USER.ACTIF.toString());
+
+            //instansciers la liste d'association
+            List<Association> associations = new ArrayList<>();
+            //verifier l'existances des association
+            if (registrationRequest.getAssociations() != null && ! registrationRequest.getAssociations().isEmpty() ){
+
+                //parcourir la liste si elle n'est pas vide et recuperer tous les identifiants des associations
+                for (AssociationDTO associationDTO: registrationRequest.getAssociations()){
+                    Association association = associationRepo.findById(associationDTO.getId())
+                            .orElseThrow(() -> new RuntimeException("Auncune association trouvée !"));
+                    associations.add(association);
+                }
+                //affecter ces identifiant à l'utilisateurs
+                user.setAssociations(associations);
+            }
+
+
 
             User userResult = userRepo.save(user);
 

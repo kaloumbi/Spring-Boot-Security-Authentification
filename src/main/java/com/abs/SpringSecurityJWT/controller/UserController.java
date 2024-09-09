@@ -1,7 +1,6 @@
 package com.abs.SpringSecurityJWT.controller;
 
 
-import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.UserService;
@@ -26,9 +25,9 @@ public class UserController {
      * ************* LISTER TOUS LES UTILISATEURS *********************
      */
     @GetMapping("/users")
-    ResponseEntity<List<UserGetDTO>> getAllUsers() throws Exception {
+    ResponseEntity<List<UserReqResDTO>> getAllUsers() throws Exception {
         // Appeler le service pour obtenir la liste des utilisateurs convertis en DTO
-        List<UserGetDTO> userListDto = userService.listUsers();
+        List<UserReqResDTO> userListDto = userService.listUsers();
 
         // Retourner la liste des DTO dans la réponse HTTP
         return ResponseEntity.ok(userListDto);

@@ -1,22 +1,20 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.CotisationDTO;
-import com.abs.SpringSecurityJWT.dto.CotisationGetResponseDTO;
-import com.abs.SpringSecurityJWT.repository.CotisationRepo;
 
 import java.util.List;
 
 public interface CotisationService {
 
-    CotisationGetResponseDTO addCotisation(CotisationDTO cotisationDTO);
+    CotisationDTO addCotisation(CotisationDTO cotisationDTO);
 
-    List<CotisationGetResponseDTO> listeCotisations();
+    List<CotisationDTO> listeCotisations();
 
-    CotisationGetResponseDTO detailCotisation(Long id);
+    CotisationDTO detailCotisation(Long id);
 
-    CotisationGetResponseDTO updateCotisation(Long id, CotisationDTO cotisationDTO);
+    CotisationDTO updateCotisation(Long id, CotisationDTO cotisationDTO);
 
     void deleteCotisation (Long id);
 
-    List<CotisationGetResponseDTO> searchCotisations(String nom);
+    List<CotisationDTO> searchCotisations(String nom);
 }

@@ -2,14 +2,11 @@ package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 
 import com.abs.SpringSecurityJWT.dto.AssociationDTO;
-import com.abs.SpringSecurityJWT.dto.AssociationGetResponseDTO;
 import com.abs.SpringSecurityJWT.enitty.Association;
 import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
-import com.abs.SpringSecurityJWT.mapper.AssociationGetResponseMapper;
 import com.abs.SpringSecurityJWT.mapper.AssociationMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.AssociationRepo;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,34 +19,32 @@ public class AssociationServiceImpl implements AssociationService{
 
     private final AssociationMapper associationMapper;
 
-    private final AssociationGetResponseMapper associationGetResponseMapper;
 
 
-    public AssociationServiceImpl(AssociationRepo associationRepo, AssociationMapper associationMapper, AssociationGetResponseMapper associationGetResponseMapper) {
+    public AssociationServiceImpl(AssociationRepo associationRepo, AssociationMapper associationMapper) {
         this.associationRepo = associationRepo;
         this.associationMapper = associationMapper;
-        this.associationGetResponseMapper = associationGetResponseMapper;
     }
 
     @Override
-    public AssociationGetResponseDTO addAssociation(AssociationDTO associationDTO) {
+    public AssociationDTO addAssociation(AssociationDTO associationDTO) {
 
         Association associationAdded = associationMapper.toEntity(associationDTO);
         associationAdded.setEtat(ETAT_SHARED.ACTIF.toString());
         associationAdded = associationRepo.save(associationAdded);
 
-        return associationGetResponseMapper.toDto(associationAdded);
+        return associationMapper.toDto(associationAdded);
     }
 
     @Override
-    public List<AssociationGetResponseDTO> listAssociation() {
+    public List<AssociationDTO> listAssociation() {
         List<Association> associationList = associationRepo.findAll();
 
-        return associationGetResponseMapper.toDto(associationList);
+        return associationMapper.toDto(associationList);
     }
 
     @Override
-    public AssociationGetResponseDTO detailAssociation(Long id) {
+    public AssociationDTO detailAssociation(Long id) {
         Optional<Association> associationSearched = associationRepo.findById(id);
 
         if (associationSearched.isEmpty()){
@@ -58,11 +53,11 @@ public class AssociationServiceImpl implements AssociationService{
 
         Association associationFound = associationSearched.get();
 
-        return associationGetResponseMapper.toDto(associationFound);
+        return associationMapper.toDto(associationFound);
     }
 
     @Override
-    public AssociationGetResponseDTO updateAssociation(Long id, AssociationDTO associationDTO) {
+    public AssociationDTO updateAssociation(Long id, AssociationDTO associationDTO) {
 
         Optional<Association> associationSearched = associationRepo.findById(id);
 
@@ -82,7 +77,7 @@ public class AssociationServiceImpl implements AssociationService{
 
         associationFound = associationRepo.save(associationFound);
 
-        return associationGetResponseMapper.toDto(associationFound);
+        return associationMapper.toDto(associationFound);
     }
 
     @Override
@@ -100,7 +95,7 @@ public class AssociationServiceImpl implements AssociationService{
     }
 
     @Override
-    public List<AssociationGetResponseDTO> searcheAssociation(String nom) {
+    public List<AssociationDTO> searcheAssociation(String nom) {
         return List.of();
     }
 }

@@ -1,12 +1,10 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.CategoryCotDTO;
-import com.abs.SpringSecurityJWT.dto.CategoryGetResponseDTO;
 import com.abs.SpringSecurityJWT.enitty.CategoryCot;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
 import com.abs.SpringSecurityJWT.mapper.CategoryCotMapper;
-import com.abs.SpringSecurityJWT.mapper.CategoryGetResponseMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.CategoryCotRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,30 +23,28 @@ public class CategoryCotServiceImpl implements CategoryCotService {
     @Autowired
     private CategoryCotMapper categoryCotMapper;
 
-    @Autowired
-    private CategoryGetResponseMapper categoryGetResponseMapper;
 
     @Override
-    public CategoryGetResponseDTO addCategoryCot(CategoryCotDTO categoryCotDTO) {
+    public CategoryCotDTO addCategoryCot(CategoryCotDTO categoryCotDTO) {
 
         CategoryCot catAdded = categoryCotMapper.toEntity(categoryCotDTO);
 
         catAdded.setEtat(ETAT_COTISATION.ACTIF.toString());
         catAdded = categoryCotRepo.save(catAdded);
 
-        return categoryGetResponseMapper.toDto(catAdded);
+        return categoryCotMapper.toDto(catAdded);
 
     }
 
     @Override
-    public List<CategoryGetResponseDTO> listeCategories() {
+    public List<CategoryCotDTO> listeCategories() {
         List<CategoryCot> categoryCotList = categoryCotRepo.findAll();
 
-        return categoryGetResponseMapper.toDto(categoryCotList);
+        return categoryCotMapper.toDto(categoryCotList);
     }
 
     @Override
-    public CategoryGetResponseDTO getCategory(Long id) {
+    public CategoryCotDTO getCategory(Long id) {
         Optional<CategoryCot> detailCatCot = categoryCotRepo.findById(id);
 
         if (detailCatCot.isEmpty()){
@@ -56,8 +52,20 @@ public class CategoryCotServiceImpl implements CategoryCotService {
         }
 
         CategoryCot catDetail = detailCatCot.get();
-        return categoryGetResponseMapper.toDto(catDetail);
+        return categoryCotMapper.toDto(catDetail);
     }
+
+//    @Override
+//    public CategoryCotDTO getCotisationCategory(Long id) {
+//        Optional<CategoryCot> detailCatCot = categoryCotRepo.findById(id);
+//
+//        if (detailCatCot.isEmpty()){
+//            return null;
+//        }
+//
+//        CategoryCot catDetail = detailCatCot.get();
+//        return categoryCotMapper.toDto(catDetail);
+//    }
 
     @Override
     public CategoryCotDTO updateCategory(Long id, CategoryCotDTO categoryCotDTO) {
@@ -95,7 +103,7 @@ public class CategoryCotServiceImpl implements CategoryCotService {
     }
 
     @Override
-    public List<CategoryGetResponseDTO> searchCategoryByName(String nom) {
+    public List<CategoryCotDTO> searchCategoryByName(String nom) {
         return List.of();
     }
 }
