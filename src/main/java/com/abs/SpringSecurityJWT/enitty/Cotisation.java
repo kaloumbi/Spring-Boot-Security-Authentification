@@ -43,6 +43,6 @@ public class Cotisation {
     private Association association;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_login", referencedColumnName = "login")
     private User user;
 }

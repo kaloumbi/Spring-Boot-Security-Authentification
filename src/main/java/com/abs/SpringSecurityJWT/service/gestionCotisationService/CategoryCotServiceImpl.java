@@ -56,7 +56,7 @@ public class CategoryCotServiceImpl implements CategoryCotService {
     }
 
 //    @Override
-//    public CategoryCotDTO getCotisationCategory(Long id) {
+//    public CategoryCotDTO getCotisationByCategory(Long id) {
 //        Optional<CategoryCot> detailCatCot = categoryCotRepo.findById(id);
 //
 //        if (detailCatCot.isEmpty()){

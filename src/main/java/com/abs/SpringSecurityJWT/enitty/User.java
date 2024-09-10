@@ -44,7 +44,7 @@ public class User implements UserDetails {
     @ManyToMany
     @JoinTable(
             name = "user_association",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "user_login", referencedColumnName = "login"),
             inverseJoinColumns = @JoinColumn(name = "association_id", referencedColumnName = "id")
     )
     private List<Association> associations = new ArrayList<>() ;

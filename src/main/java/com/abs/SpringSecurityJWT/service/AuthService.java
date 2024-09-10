@@ -70,7 +70,7 @@ public class AuthService {
 
             User userResult = userRepo.save(user);
 
-            if (userResult != null && userResult.getId() > 0){
+            if (userResult.getId() > 0){
                 resp.setUsers(userResult);
                 resp.setMessage("User Save Successfully");
                 resp.setStatusCode(200);

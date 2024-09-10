@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.controller;
 
 import com.abs.SpringSecurityJWT.dto.CotisationDTO;
+import com.abs.SpringSecurityJWT.dto.StatistiqueCotisationDTO;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.CotisationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,5 +54,18 @@ public class CotisationController {
         cotisationService.deleteCotisation(id);
 
         return new ResponseEntity<>("Suppression de la cotisation reussie !", HttpStatus.OK);
+    }
+
+    @GetMapping("/cotisations/statistique")
+    public ResponseEntity<StatistiqueCotisationDTO> statistiqueCotisationDTO(){
+        StatistiqueCotisationDTO statistiqueCotisationDTO = cotisationService.calculMontantCotisation();
+
+        return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
+    }
+    @GetMapping("/cotisations/statistiqueUser")
+    public ResponseEntity<StatistiqueCotisationDTO> statistiqueUserCotisationDTO(String login){
+        StatistiqueCotisationDTO statistiqueCotisationDTO = cotisationService.calculUserCotisation(login);
+
+        return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
     }
 }

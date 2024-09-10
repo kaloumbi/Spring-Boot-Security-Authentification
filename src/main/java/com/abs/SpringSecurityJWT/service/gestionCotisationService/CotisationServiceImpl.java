@@ -1,8 +1,10 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.CotisationDTO;
+import com.abs.SpringSecurityJWT.dto.StatistiqueCotisationDTO;
 import com.abs.SpringSecurityJWT.enitty.Cotisation;
 import com.abs.SpringSecurityJWT.enitty.User;
+import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
 import com.abs.SpringSecurityJWT.mapper.CotisationMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
@@ -10,6 +12,7 @@ import com.abs.SpringSecurityJWT.repository.CotisationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +44,10 @@ public class CotisationServiceImpl implements CotisationService{
         }
         addCot.setUser(userConnectedFound);
 
-        addCot.setEtat(ETAT_SHARED.ACTIF.toString());
+        addCot.setEtat(ETAT_COTISATION.NON_VALIDE.toString());
         addCot = cotisationRepo.save(addCot);
+
+
 
         return cotisationMapper.toDto(addCot);
     }
@@ -81,7 +86,7 @@ public class CotisationServiceImpl implements CotisationService{
             cotisationDTO.setId(cotisationFound.getId());
         }
         cotisationFound = cotisationMapper.toEntity(cotisationDTO);
-        cotisationFound.setEtat(ETAT_SHARED.ACTIF.toString());
+        cotisationFound.setEtat(ETAT_COTISATION.ACTIF.toString());
 
         cotisationRepo.save(cotisationFound);
 
@@ -98,7 +103,7 @@ public class CotisationServiceImpl implements CotisationService{
 
         Cotisation cotisationFound = cotisationSearch.get();
 
-        cotisationFound.setEtat(ETAT_SHARED.SUPPRIME.toString());
+        cotisationFound.setEtat(ETAT_COTISATION.SUPPRIME.toString());
         cotisationRepo.save(cotisationFound);
     }
 
@@ -106,4 +111,84 @@ public class CotisationServiceImpl implements CotisationService{
     public List<CotisationDTO> searchCotisations(String nom) {
         return List.of();
     }
+
+
+    //Calcul de montant
+    @Override
+    public StatistiqueCotisationDTO calculMontantCotisation() {
+        //recuperation de la liste des cotisations
+        List<Cotisation> cotisationList = cotisationRepo.findAll();
+
+        //instanciation de la statistique dto
+        StatistiqueCotisationDTO statistiqueCotisationDTO = new StatistiqueCotisationDTO();
+
+        //initialisation des totaux à zero
+        BigDecimal totalMontantCotisation = BigDecimal.ZERO;
+        BigDecimal totalCotisationValide = BigDecimal.ZERO;
+        BigDecimal totalCotisationNonValide = BigDecimal.ZERO;
+
+        //Parcourir la liste des cotisation
+        for (Cotisation cotisation : cotisationList){
+            //recuperer le montant total
+            BigDecimal montant = cotisation.getMontant();
+            totalMontantCotisation = totalMontantCotisation.add(montant);
+
+            //Ajouter les montants suivant l'etat
+            if (cotisation.getEtat().equals(ETAT_COTISATION.VALIDE.toString())){
+                totalCotisationValide = totalCotisationValide.add(montant);
+            } else if (cotisation.getEtat().equals(ETAT_COTISATION.NON_VALIDE.toString())) {
+                totalCotisationNonValide = totalCotisationNonValide.add(montant);
+            }
+        }
+
+        //Setter ces montant dans le dto puis renvoyer le dto
+        statistiqueCotisationDTO.setTotalMontantCotisation(totalMontantCotisation);
+        statistiqueCotisationDTO.setTotalCotisationValidee(totalCotisationValide);
+        statistiqueCotisationDTO.setTotalCotisationNonValidee(totalCotisationNonValide);
+
+        return statistiqueCotisationDTO;
+    }
+
+    @Override
+    public StatistiqueCotisationDTO calculUserCotisation(String login) {
+
+        //Appel de la fonction pour trouver l'utisateur connecté
+        User userConnectedFound = userService.getAuthenticatedUser();
+
+        //recuperation de la liste des cotisations
+        List<Cotisation> cotisationList = cotisationRepo.findAll();
+
+
+        //instanciation de la statistique dto
+        StatistiqueCotisationDTO statistiqueCotisationDTO = new StatistiqueCotisationDTO();
+
+        //initialisation des totaux à zero
+        BigDecimal totalMontantCotisation = BigDecimal.ZERO;
+        BigDecimal totalCotisationValide = BigDecimal.ZERO;
+        BigDecimal totalCotisationNonValide = BigDecimal.ZERO;
+
+        //Parcourir la liste des cotisation
+        for (Cotisation cotisation : cotisationList){
+            if (cotisation.getUser().getLogin().equals(userConnectedFound.getLogin())) {
+                //recuperer le montant total
+                BigDecimal montant = cotisation.getMontant();
+                totalMontantCotisation = totalMontantCotisation.add(montant);
+
+                //Ajouter les montants suivant l'etat
+                if (cotisation.getEtat().equals(ETAT_COTISATION.VALIDE.toString())) {
+                    totalCotisationValide = totalCotisationValide.add(montant);
+                } else if (cotisation.getEtat().equals(ETAT_COTISATION.NON_VALIDE.toString())) {
+                    totalCotisationNonValide = totalCotisationNonValide.add(montant);
+                }
+            }
+        }
+
+        //Setter ces montant dans le dto puis renvoyer le dto
+        statistiqueCotisationDTO.setTotalMontantCotisation(totalMontantCotisation);
+        statistiqueCotisationDTO.setTotalCotisationValidee(totalCotisationValide);
+        statistiqueCotisationDTO.setTotalCotisationNonValidee(totalCotisationNonValide);
+
+        return statistiqueCotisationDTO;
+    }
+
 }

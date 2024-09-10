@@ -6,5 +6,7 @@ public enum ETAT_COTISATION {
     SUPPRIME,
     ENCOURS,
     TERMINE,
-    COMPLETED
+    COMPLETED,
+    VALIDE,
+    NON_VALIDE
 }
