@@ -2,6 +2,7 @@ package com.abs.SpringSecurityJWT.dto;
 
 import com.abs.SpringSecurityJWT.enitty.CategoryCot;
 import com.abs.SpringSecurityJWT.enitty.User;
+import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.enums.ModeDePaiement;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -22,7 +23,7 @@ public class CotisationDTO {
 
     private ModeDePaiement modeDePaiement;
 
-    private String etat;
+    private ETAT_COTISATION etat;
 
     private CategoryCotDTO categoryCot;
 

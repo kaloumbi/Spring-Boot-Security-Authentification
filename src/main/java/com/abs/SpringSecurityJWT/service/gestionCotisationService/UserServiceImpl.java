@@ -116,6 +116,7 @@ public class UserServiceImpl implements UserService{
         return userMapper.toDto(userFound);
     }
 
+
     //recuperer l'utilisateur connecté
     @Override
     public User getAuthenticatedUser() {
@@ -132,6 +133,7 @@ public class UserServiceImpl implements UserService{
 
         return userConnecte.orElse(null);
     }
+
 
 
 }

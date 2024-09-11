@@ -1,7 +1,10 @@
 package com.abs.SpringSecurityJWT.controller;
 
 import com.abs.SpringSecurityJWT.dto.CotisationDTO;
+import com.abs.SpringSecurityJWT.dto.HistoriqueCotisationDTO;
 import com.abs.SpringSecurityJWT.dto.StatistiqueCotisationDTO;
+import com.abs.SpringSecurityJWT.enitty.Cotisation;
+import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.CotisationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,9 +66,34 @@ public class CotisationController {
         return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
     }
     @GetMapping("/cotisations/statistiqueUser")
-    public ResponseEntity<StatistiqueCotisationDTO> statistiqueUserCotisationDTO(String login){
-        StatistiqueCotisationDTO statistiqueCotisationDTO = cotisationService.calculUserCotisation(login);
+    public ResponseEntity<StatistiqueCotisationDTO> statistiqueUserCotisationDTO(){
+        StatistiqueCotisationDTO statistiqueCotisationDTO = cotisationService.calculUserCotisation();
 
         return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
     }
+
+    //fonction permettant de changer l'etat d'une cotisation
+
+    @PutMapping("/cotisation/{id}/etat")
+    public ResponseEntity<String> changerEtatCotisation(@PathVariable Long id, @RequestParam ETAT_COTISATION etatCotisation){
+
+        boolean iscUpdated = cotisationService.changeEtatCotisation(id, etatCotisation);
+        if (iscUpdated){
+            return new ResponseEntity<>(" L'etat de la cotisation modifie avec succès! ", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(" Errreur lors de la modification de L'etat de la cotisation ! ", HttpStatus.OK);
+
+    }
+
+    //Liste Cotisation par l'utilisateur connecté
+
+    @GetMapping("/cotisations/historique/list")
+    public ResponseEntity<List<HistoriqueCotisationDTO>> getUserListCotisation(){
+        List<HistoriqueCotisationDTO> cotisationDTOS = cotisationService.listCotisationByUser();
+
+        return new ResponseEntity<>(cotisationDTOS, HttpStatus.OK);
+    }
+
+
 }

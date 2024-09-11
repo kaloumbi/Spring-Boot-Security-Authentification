@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.AssociationDTO;
+import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 
 import java.util.List;
 
@@ -17,4 +18,5 @@ public interface AssociationService {
     void deleteAssociation(Long id);
 
     List<AssociationDTO> searcheAssociation(String nom);
+
 }

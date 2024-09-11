@@ -1,5 +1,6 @@
 package com.abs.SpringSecurityJWT.enitty;
 
+import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.enums.ModeDePaiement;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,9 @@ public class Cotisation {
     @Column(nullable = false)
     private ModeDePaiement modeDePaiement;
 
-    @Column(name = "etat")
-    private String etat;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "etat", nullable = false)
+    private ETAT_COTISATION etat;
 
     @ManyToOne
     @JoinColumn(name = "categoryCot_id", referencedColumnName = "id")
