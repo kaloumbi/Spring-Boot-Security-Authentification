@@ -97,9 +97,7 @@ public class UserServiceImpl implements UserService{
     public List<UserReqResDTO> searcheUsers(String prenom){
         List<User> userSearched = userRepo.findByPrenomStartingWith(prenom);
 
-        List<UserReqResDTO> listUsersByPrenom = userMapper.toDto(userSearched);
-
-        return listUsersByPrenom;
+        return userMapper.toDto(userSearched);
     }
 
     @Override
@@ -134,6 +132,12 @@ public class UserServiceImpl implements UserService{
         return userConnecte.orElse(null);
     }
 
+    @Override
+    public List<UserReqResDTO> findUsersByAssociationName(String nom) {
+        List<User> userListByAssociation = userRepo.findByAssociationNom(nom);
+
+        return userMapper.toDto(userListByAssociation);
+    }
 
 
 }

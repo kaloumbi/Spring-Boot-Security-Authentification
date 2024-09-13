@@ -221,4 +221,56 @@ public class CotisationServiceImpl implements CotisationService{
 
     }
 
+    @Override
+    public List<HistoriqueCotisationDTO> listCotisationByUserCatAssociation(String category, String association) {
+        
+        User authUser = userService.getAuthenticatedUser();
+        
+        List<Cotisation> cotisationList = cotisationRepo.findByUserLoginAndCategoryCotNomAndAssociationNom(authUser.getLogin(), category, association);
+        return historiqueCotisationMapper.toDto(cotisationList);
+    }
+
+    @Override
+    public StatistiqueCotisationDTO calculMontantUserCotisationByAssCat(String category, String association) {
+        //Appel de la fonction pour trouver l'utisateur connecté
+        User userConnectedFound = userService.getAuthenticatedUser();
+
+        //recuperation de la liste des cotisations d'un utilisateur par category et association
+        List<Cotisation> cotisationList = cotisationRepo.findByUserLoginAndCategoryCotNomAndAssociationNom(userConnectedFound.getLogin(), category, association);
+
+
+
+
+        //instanciation de la statistique dto
+        StatistiqueCotisationDTO statistiqueCotisationDTO = new StatistiqueCotisationDTO();
+
+        //initialisation des totaux à zero
+        BigDecimal totalMontantCotisation = BigDecimal.ZERO;
+        BigDecimal totalCotisationValide = BigDecimal.ZERO;
+        BigDecimal totalCotisationNonValide = BigDecimal.ZERO;
+
+        //Parcourir la liste des cotisation
+        for (Cotisation cotisation : cotisationList){
+            if (cotisation.getUser().getLogin().equals(userConnectedFound.getLogin())) {
+                //recuperer le montant total
+                BigDecimal montant = cotisation.getMontant();
+                totalMontantCotisation = totalMontantCotisation.add(montant);
+
+                //Ajouter les montants suivant l'etat
+                if (cotisation.getEtat().equals(ETAT_COTISATION.VALIDE)) {
+                    totalCotisationValide = totalCotisationValide.add(montant);
+                } else if (cotisation.getEtat().equals(ETAT_COTISATION.NON_VALIDE)) {
+                    totalCotisationNonValide = totalCotisationNonValide.add(montant);
+                }
+            }
+        }
+
+        //Setter ces montant dans le dto puis renvoyer le dto
+        statistiqueCotisationDTO.setTotalMontantCotisation(totalMontantCotisation);
+        statistiqueCotisationDTO.setTotalCotisationValidee(totalCotisationValide);
+        statistiqueCotisationDTO.setTotalCotisationNonValidee(totalCotisationNonValide);
+
+        return statistiqueCotisationDTO;
+    }
+
 }

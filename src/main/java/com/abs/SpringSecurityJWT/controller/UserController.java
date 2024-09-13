@@ -101,6 +101,16 @@ public class UserController {
 
         return ResponseEntity.ok(listUsersByPrenomDto);
     }
-    
+
+    /**
+     * AVOIR LA LISTE DES UTILISATEURS PAR LE NOM D'ASSOCIATION
+     */
+
+    @GetMapping("/usersList/association")
+    public  ResponseEntity<List<UserReqResDTO>> userListByAssociation(@RequestParam String nom){
+        List<UserReqResDTO> userReqResDTOList = userService.findUsersByAssociationName(nom);
+
+        return new ResponseEntity<>(userReqResDTOList, HttpStatus.OK);
+    }
 
 }

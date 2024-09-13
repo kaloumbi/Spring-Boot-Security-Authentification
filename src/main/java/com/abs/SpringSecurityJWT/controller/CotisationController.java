@@ -96,4 +96,23 @@ public class CotisationController {
     }
 
 
+    //liste des cotisation par category et association d'un utilisateur connecté
+
+    @GetMapping("/myCotisations/assCat")
+    public ResponseEntity<List<HistoriqueCotisationDTO>> historiqueCotisationDTOS(@RequestParam String category, @RequestParam String assocation){
+
+        List<HistoriqueCotisationDTO> historiqueCotisationDTOList = cotisationService.listCotisationByUserCatAssociation(category, assocation);
+
+        return new ResponseEntity<>(historiqueCotisationDTOList, HttpStatus.OK);
+    }
+
+    //liste des cotisation par category et association d'un utilisateur connecté
+    @GetMapping("/myCotisations/assCat/statistique")
+    public ResponseEntity<StatistiqueCotisationDTO> listCotisationByUserCatAssociation(@RequestParam String category, @RequestParam String assocation){
+
+        StatistiqueCotisationDTO statistiqueCotisationDTO = cotisationService.calculMontantUserCotisationByAssCat(category, assocation);
+
+        return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
+    }
+
 }

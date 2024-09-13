@@ -31,4 +31,8 @@ public interface CotisationService {
     //avoir l'historique des cotisations d'un utilisateur
     List<HistoriqueCotisationDTO> listCotisationByUser();
 
+    //avoir la liste des cotisations d'un user connecté par category et association
+    List<HistoriqueCotisationDTO> listCotisationByUserCatAssociation(String category, String association);
+
+    StatistiqueCotisationDTO calculMontantUserCotisationByAssCat(String category, String association);
 }

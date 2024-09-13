@@ -22,5 +22,7 @@ public interface UserService {
     //function to receive User Connected
     User getAuthenticatedUser();
 
+    List<UserReqResDTO> findUsersByAssociationName(String nom);
+
 
 }
