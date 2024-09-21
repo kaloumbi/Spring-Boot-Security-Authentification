@@ -115,4 +115,22 @@ public class CotisationController {
         return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
     }
 
+    //lister les cotisation par evenement
+    @GetMapping("cotisations/events/list")
+    public ResponseEntity<List<HistoriqueCotisationDTO>> getAllCotisationByEvent(@RequestParam String nom){
+
+        List<HistoriqueCotisationDTO> cotisationDTOList = cotisationService.getCotisationByEvent(nom);
+
+        return new ResponseEntity<>(cotisationDTOList, HttpStatus.OK);
+    }
+
+
+    //Calculer le montant des cotisations reçues par evenement
+    @GetMapping("cotisationMontant/statistique")
+    public ResponseEntity<StatistiqueCotisationDTO> montantTotalParEvent(@RequestParam String nom){
+        StatistiqueCotisationDTO statistiqueCotisationDTO = cotisationService.montantTotalCotisationByEvent(nom);
+
+        return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
+    }
+
 }

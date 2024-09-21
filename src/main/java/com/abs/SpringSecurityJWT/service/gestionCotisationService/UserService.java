@@ -1,5 +1,6 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
+import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enitty.User;
 
@@ -23,6 +24,9 @@ public interface UserService {
     User getAuthenticatedUser();
 
     List<UserReqResDTO> findUsersByAssociationName(String nom);
+
+    List<UserGetDTO> getUsersByAssociation(String nom);
+
 
 
 }

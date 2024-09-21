@@ -35,4 +35,10 @@ public interface CotisationService {
     List<HistoriqueCotisationDTO> listCotisationByUserCatAssociation(String category, String association);
 
     StatistiqueCotisationDTO calculMontantUserCotisationByAssCat(String category, String association);
+
+    //lister les cotisation par event
+    List<HistoriqueCotisationDTO> getCotisationByEvent(String nom);
+
+    //Calculer le montant total des cotisations par evenement
+    StatistiqueCotisationDTO montantTotalCotisationByEvent(String nom);
 }

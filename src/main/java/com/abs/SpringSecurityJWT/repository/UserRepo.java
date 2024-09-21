@@ -20,6 +20,8 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN u.associations a WHERE a.nom = :nom")
     List<User> findByAssociationNom(@Param("nom") String nom);
 
+    // Rechercher des utilisateurs par le nom de l'association
+    List<User> findByAssociations_Nom(String nom);
 //    @Query("select u from User u left join fetch u.events")
 //    List<User> findAllWithEvents();
 

@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.dto;
 
 import com.abs.SpringSecurityJWT.enitty.CategoryCot;
+import com.abs.SpringSecurityJWT.enitty.Event;
 import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.enums.ModeDePaiement;
@@ -30,5 +31,8 @@ public class CotisationDTO {
     private AssociationDTO association;
 
     private UserReqResDTO user;
+
+    private EventDTO event;
+
 
 }

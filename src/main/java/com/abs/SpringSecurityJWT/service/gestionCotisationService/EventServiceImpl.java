@@ -137,5 +137,6 @@ public class EventServiceImpl implements EventService{
     }
 
 
-
+    public static class EmailServiceImpl {
+    }
 }

@@ -1,9 +1,11 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
+import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_USER;
 import com.abs.SpringSecurityJWT.mapper.EventMapper;
+import com.abs.SpringSecurityJWT.mapper.UserGetMapper;
 import com.abs.SpringSecurityJWT.mapper.UserMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.EventRepo;
@@ -27,6 +29,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserGetMapper userGetMapper;
 
     @Autowired
     private EventMapper eventMapper;
@@ -139,5 +144,12 @@ public class UserServiceImpl implements UserService{
         return userMapper.toDto(userListByAssociation);
     }
 
+
+    @Override
+    public List<UserGetDTO> getUsersByAssociation(String nom) {
+        List<User> userList = userRepo.findByAssociations_Nom(nom);
+
+        return userGetMapper.toDto(userList);
+    }
 
 }

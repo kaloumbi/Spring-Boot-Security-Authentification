@@ -273,4 +273,48 @@ public class CotisationServiceImpl implements CotisationService{
         return statistiqueCotisationDTO;
     }
 
+    @Override
+    public List<HistoriqueCotisationDTO> getCotisationByEvent(String nom) {
+
+        List<Cotisation> cotisationList = cotisationRepo.findByEventNom(nom);
+
+        return historiqueCotisationMapper.toDto(cotisationList);
+    }
+
+    @Override
+    public StatistiqueCotisationDTO montantTotalCotisationByEvent(String nom) {
+
+        //recuperation de la liste des cotisations
+        List<Cotisation> cotisationList = cotisationRepo.findByEventNom(nom);
+
+        //instanciation de la statistique dto
+        StatistiqueCotisationDTO statistiqueCotisationDTO = new StatistiqueCotisationDTO();
+
+        //initialisation des totaux à zero
+        BigDecimal totalMontantCotisation = BigDecimal.ZERO;
+        BigDecimal totalCotisationValide = BigDecimal.ZERO;
+        BigDecimal totalCotisationNonValide = BigDecimal.ZERO;
+
+        //Parcourir la liste des cotisation
+        for (Cotisation cotisation : cotisationList){
+            //recuperer le montant total
+            BigDecimal montant = cotisation.getMontant();
+            totalMontantCotisation = totalMontantCotisation.add(montant);
+
+            //Ajouter les montants suivant l'etat
+            if (cotisation.getEtat().equals(ETAT_COTISATION.VALIDE)){
+                totalCotisationValide = totalCotisationValide.add(montant);
+            } else if (cotisation.getEtat().equals(ETAT_COTISATION.NON_VALIDE)) {
+                totalCotisationNonValide = totalCotisationNonValide.add(montant);
+            }
+        }
+
+        //Setter ces montant dans le dto puis renvoyer le dto
+        statistiqueCotisationDTO.setTotalMontantCotisation(totalMontantCotisation);
+        statistiqueCotisationDTO.setTotalCotisationValidee(totalCotisationValide);
+        statistiqueCotisationDTO.setTotalCotisationNonValidee(totalCotisationNonValide);
+
+        return statistiqueCotisationDTO;
+    }
+
 }

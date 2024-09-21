@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 import com.abs.SpringSecurityJWT.dto.AssociationDTO;
+import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 
 import java.util.List;

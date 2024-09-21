@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.controller;
 
 
+import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.UserService;
@@ -111,6 +112,14 @@ public class UserController {
         List<UserReqResDTO> userReqResDTOList = userService.findUsersByAssociationName(nom);
 
         return new ResponseEntity<>(userReqResDTOList, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/association/users/list")
+    public ResponseEntity<List<UserGetDTO>> listUsersByAssociation(@RequestParam String nom){
+        List<UserGetDTO> userList = userService.getUsersByAssociation(nom);
+
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
 }

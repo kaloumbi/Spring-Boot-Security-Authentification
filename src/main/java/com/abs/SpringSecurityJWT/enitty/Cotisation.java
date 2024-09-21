@@ -47,4 +47,8 @@ public class Cotisation {
     @ManyToOne
     @JoinColumn(name = "user_login", referencedColumnName = "login")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id", referencedColumnName = "id")
+    private Event event;
 }

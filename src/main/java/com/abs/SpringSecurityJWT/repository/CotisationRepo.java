@@ -17,5 +17,8 @@ public interface CotisationRepo extends JpaRepository<Cotisation, Long> {
     // Méthode dérivée pour rechercher par login, category et association
     List<Cotisation> findByUserLoginAndCategoryCotNomAndAssociationNom(String login, String category, String association);
 
+    //lister cotisations par evenement
+    List<Cotisation> findByEventNom(String nom);
+
 
 }

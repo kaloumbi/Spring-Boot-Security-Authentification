@@ -2,9 +2,12 @@ package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
 
 import com.abs.SpringSecurityJWT.dto.AssociationDTO;
+import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enitty.Association;
+import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
 import com.abs.SpringSecurityJWT.mapper.AssociationMapper;
+import com.abs.SpringSecurityJWT.mapper.UserMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.AssociationRepo;
 import org.springframework.stereotype.Service;
@@ -19,11 +22,14 @@ public class AssociationServiceImpl implements AssociationService{
 
     private final AssociationMapper associationMapper;
 
+    private final UserMapper userMapper;
 
 
-    public AssociationServiceImpl(AssociationRepo associationRepo, AssociationMapper associationMapper) {
+
+    public AssociationServiceImpl(AssociationRepo associationRepo, AssociationMapper associationMapper, UserMapper userMapper) {
         this.associationRepo = associationRepo;
         this.associationMapper = associationMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -98,4 +104,6 @@ public class AssociationServiceImpl implements AssociationService{
     public List<AssociationDTO> searcheAssociation(String nom) {
         return List.of();
     }
+
+
 }

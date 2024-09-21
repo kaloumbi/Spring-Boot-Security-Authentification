@@ -66,6 +66,12 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.6.0.Beta1</version>
 		</dependency>
+
+		<!-- MAIL SENDER -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
