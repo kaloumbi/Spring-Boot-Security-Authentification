@@ -7,18 +7,28 @@ import com.abs.SpringSecurityJWT.enitty.Cotisation;
 import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
+import com.abs.SpringSecurityJWT.enums.ModeDePaiement;
 import com.abs.SpringSecurityJWT.mapper.CotisationMapper;
 import com.abs.SpringSecurityJWT.mapper.HistoriqueCotisationMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.CotisationRepo;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class CotisationServiceImpl implements CotisationService{
 
 
@@ -34,6 +44,9 @@ public class CotisationServiceImpl implements CotisationService{
     @Autowired
     private HistoriqueCotisationMapper historiqueCotisationMapper;
 
+    //VARIABLE POUR IMAGE PATH
+    @Value("${file.path}")
+    private String filePath;
 
 
     @Override
@@ -316,5 +329,37 @@ public class CotisationServiceImpl implements CotisationService{
 
         return statistiqueCotisationDTO;
     }
+
+    //method pour charger mon image
+    @Override
+    public String saveFile(MultipartFile file, Long id) throws IOException {
+
+        Optional<Cotisation> cotSearch = cotisationRepo.findById(id);
+        if (! cotSearch.isPresent()){
+            return null;
+        }
+
+        Path path = Paths.get(filePath);
+        Path  dest = path.resolve(file.getOriginalFilename());
+        Files.copy(file.getInputStream(), dest);
+
+        Cotisation cf = cotSearch.get();
+        cf.setImageCot(path.toString());
+
+        cotisationRepo.save(cf);
+
+        //System.out.println(dest);
+
+        return  dest.toString();
+    }
+
+
+    //methode pour telecharger mon image
+    @Override
+    public Cotisation getImage(Long id){
+        return cotisationRepo.findById(id).get();
+    }
+
+
 
 }

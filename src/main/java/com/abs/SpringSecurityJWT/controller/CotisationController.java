@@ -9,9 +9,13 @@ import com.abs.SpringSecurityJWT.service.gestionCotisationService.CotisationServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("admin")
@@ -132,5 +136,22 @@ public class CotisationController {
 
         return new ResponseEntity<>(statistiqueCotisationDTO, HttpStatus.OK);
     }
+
+
+    //methode pour charger mon image
+    @PostMapping("/image/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam Long id) throws IOException {
+
+        cotisationService.saveFile(file, id);
+
+        return new ResponseEntity<>("uploaded", HttpStatus.CREATED);
+    }
+
+//    @PostMapping("/download/{id}")
+//    public ResponseEntity<byte[]> downloadFile(@PathVariable("file") Long id){
+//        Cotisation imageCot = cotisationService.getImage(id);
+//
+//        return  ResponseEntity.ok().header("Content_type","file/jpeg").body(imageCot.getImageCot());
+//    }
 
 }

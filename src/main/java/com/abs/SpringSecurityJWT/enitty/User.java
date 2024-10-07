@@ -2,6 +2,8 @@ package com.abs.SpringSecurityJWT.enitty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +29,8 @@ public class User implements UserDetails {
     private String tel;
 
     @Column(name = "login", unique = true)
+    @NotNull(message = "The User should have an email !")
+    @Email(message = "You have to provide a valid email ! ")
     private String login;
 
     @Column(name = "password")

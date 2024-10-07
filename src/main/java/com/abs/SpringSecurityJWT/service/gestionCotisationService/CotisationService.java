@@ -3,8 +3,11 @@ package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 import com.abs.SpringSecurityJWT.dto.CotisationDTO;
 import com.abs.SpringSecurityJWT.dto.HistoriqueCotisationDTO;
 import com.abs.SpringSecurityJWT.dto.StatistiqueCotisationDTO;
+import com.abs.SpringSecurityJWT.enitty.Cotisation;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CotisationService {
@@ -41,4 +44,10 @@ public interface CotisationService {
 
     //Calculer le montant total des cotisations par evenement
     StatistiqueCotisationDTO montantTotalCotisationByEvent(String nom);
+
+    //method pour charger mon image
+    public String saveFile(MultipartFile file, Long id) throws IOException;
+
+    //methode pour telecharger mon image
+    Cotisation getImage(Long id);
 }

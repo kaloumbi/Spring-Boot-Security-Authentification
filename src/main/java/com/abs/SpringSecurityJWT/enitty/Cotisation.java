@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,6 +32,10 @@ public class Cotisation {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ModeDePaiement modeDePaiement;
+
+    // Champ image qui contient le chemin du fichier
+    @Column(name = "imageCot")
+    private String imageCot;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "etat", nullable = false)

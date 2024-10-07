@@ -24,6 +24,8 @@ public class CotisationDTO {
 
     private ModeDePaiement modeDePaiement;
 
+    private String imageCot;
+
     private ETAT_COTISATION etat;
 
     private CategoryCotDTO categoryCot;

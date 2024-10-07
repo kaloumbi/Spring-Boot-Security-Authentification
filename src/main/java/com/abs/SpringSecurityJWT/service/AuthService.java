@@ -90,12 +90,13 @@ public class AuthService {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getLogin(), signinRequest.getPassword() ));
-            var user = userRepo.findByLogin(signinRequest.getLogin()).orElseThrow();
+            var user = userRepo.findByLogin(signinRequest.getLogin()).orElseThrow(); // Trouver l'utilisateur connecté !
             System.out.println("USER IS : "+ user);
             var jwt = jwtUtils.generateToken(user);
             var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
             response.setStatusCode(200);
             response.setToken(jwt);
+            response.setUsers(user); //j'ai ajouter ici un utilisateur !
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hr");
             response.setMessage("Successfully Signed In");
