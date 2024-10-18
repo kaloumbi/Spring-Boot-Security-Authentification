@@ -10,4 +10,7 @@ public class SpringSecurityJwtApplication {
 		SpringApplication.run(SpringSecurityJwtApplication.class, args);
 	}
 
+
+
+
 }

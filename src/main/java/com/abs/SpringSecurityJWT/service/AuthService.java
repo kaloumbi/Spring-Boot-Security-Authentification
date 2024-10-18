@@ -2,11 +2,17 @@ package com.abs.SpringSecurityJWT.service;
 
 
 import com.abs.SpringSecurityJWT.dto.AssociationDTO;
+import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enitty.Association;
+import com.abs.SpringSecurityJWT.enitty.Role;
 import com.abs.SpringSecurityJWT.enitty.User;
 import com.abs.SpringSecurityJWT.enums.ETAT_USER;
+import com.abs.SpringSecurityJWT.mapper.RoleMapper;
+import com.abs.SpringSecurityJWT.mapper.UserGetMapper;
+import com.abs.SpringSecurityJWT.mapper.UserMapper;
 import com.abs.SpringSecurityJWT.repository.AssociationRepo;
+import com.abs.SpringSecurityJWT.repository.RoleRepository;
 import com.abs.SpringSecurityJWT.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -36,9 +43,23 @@ public class AuthService {
     @Autowired
     private AssociationRepo associationRepo;
 
+    //Ajout d'un mapper //cotisation mapper
+    @Autowired
+    private RoleMapper roleMapper;
 
-    public UserReqResDTO signUp(UserReqResDTO registrationRequest){
-        UserReqResDTO resp = new UserReqResDTO();
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserGetMapper userGetMapper;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+
+
+    public UserGetDTO signUp(UserReqResDTO registrationRequest){
+        UserGetDTO resp = new UserGetDTO();
 
         try {
             User user = new User();
@@ -48,8 +69,21 @@ public class AuthService {
             user.setTel(registrationRequest.getTel());
             user.setLogin(registrationRequest.getLogin());
             user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            user.setRole(registrationRequest.getRole());
             user.setEtat(ETAT_USER.ACTIF.toString());
+
+
+
+//             Charger les rôles depuis la base de données
+            List<Role> roles = registrationRequest.getRoles().stream()
+                    .map(roleDTO -> roleRepository.findById(roleDTO.getId())
+                            .orElseThrow(() -> new RuntimeException("Role not found: " + roleDTO.getId())))
+                    .toList();
+
+
+
+            //Assigner les roles existant à l'utilisateur
+            user.setRoles(roles);
+
 
             //instansciers la liste d'association
             List<Association> associations = new ArrayList<>();
@@ -69,9 +103,10 @@ public class AuthService {
 
 
             User userResult = userRepo.save(user);
+            UserGetDTO userResultDto = userGetMapper.toDto(userResult);
 
             if (userResult.getId() > 0){
-                resp.setUsers(userResult);
+                resp.setUsers(userResultDto.getUsers());
                 resp.setMessage("User Save Successfully");
                 resp.setStatusCode(200);
             }

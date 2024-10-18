@@ -1,6 +1,7 @@
 package com.abs.SpringSecurityJWT.controller;
 
 
+import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.repository.UserRepo;
 import com.abs.SpringSecurityJWT.service.AuthService;
@@ -23,7 +24,7 @@ public class AuthController {
     UserRepo userRepo;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserReqResDTO> signUp(@RequestBody UserReqResDTO signUpRequest){
+    public ResponseEntity<UserGetDTO> signUp(@RequestBody UserReqResDTO signUpRequest){
 
         return ResponseEntity.ok(authService.signUp(signUpRequest));
     }

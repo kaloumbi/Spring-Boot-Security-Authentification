@@ -1,5 +1,6 @@
 package com.abs.SpringSecurityJWT.dto;
 
+import com.abs.SpringSecurityJWT.enitty.User;
 import lombok.Data;
 
 @Data
@@ -18,6 +19,7 @@ public class UserGetDTO {
     private String nom;
     private String login;
     private String tel;
-    private String role;
     private String etat;
+
+    private UserReqResDTO users;
 }

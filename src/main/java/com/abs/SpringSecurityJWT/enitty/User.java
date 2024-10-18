@@ -1,6 +1,5 @@
 package com.abs.SpringSecurityJWT.enitty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -36,16 +36,24 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
+    /*@Column(name = "role")
+    private String role;*/
 
     @Column(name = "etat")
     private String etat;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private List<Role> roles = new ArrayList<>();
 
 
 
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_association",
             joinColumns = @JoinColumn(name = "user_login", referencedColumnName = "login"),
@@ -71,8 +79,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        //return List.of(new SimpleGrantedAuthority(roles.toString())); //modification du champ roles toString
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getNom()))
+                .collect(Collectors.toList());
     }
+
 
 
     @Override

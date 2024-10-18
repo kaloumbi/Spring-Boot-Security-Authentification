@@ -26,9 +26,9 @@ public class UserController {
      * ************* LISTER TOUS LES UTILISATEURS *********************
      */
     @GetMapping("/users")
-    ResponseEntity<List<UserReqResDTO>> getAllUsers() throws Exception {
+    ResponseEntity<List<UserGetDTO>> getAllUsers() throws Exception {
         // Appeler le service pour obtenir la liste des utilisateurs convertis en DTO
-        List<UserReqResDTO> userListDto = userService.listUsers();
+        List<UserGetDTO> userListDto = userService.listUsers();
 
         // Retourner la liste des DTO dans la réponse HTTP
         return ResponseEntity.ok(userListDto);

@@ -1,6 +1,6 @@
 package com.abs.SpringSecurityJWT.enums;
 
-public enum ROLE {
+public enum EROLE {
     ADMIN,
     MEMBRE,
     TRESORIER,

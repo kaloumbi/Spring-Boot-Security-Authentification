@@ -45,7 +45,7 @@ public class JWTUtils {
                 .claim("prenom", userSearched.getPrenom())
                 .claim("nom", userSearched.getNom())
                 .claim("tel", userSearched.getTel())
-                .claim("role", userSearched.getRole())
+                .claim("role", userSearched.getRoles()) //modification roles to get roles
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME ))
                 .signWith(key)

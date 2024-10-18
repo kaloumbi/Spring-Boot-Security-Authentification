@@ -40,13 +40,13 @@ public class UserServiceImpl implements UserService{
     private EventRepo eventRepo;
 
     @Override
-    public List<UserReqResDTO> listUsers(){
+    public List<UserGetDTO> listUsers(){
         List<User> users = userRepo.findAll();
 
 //        users.forEach(user -> {
 //          //  System.out.println("les events"+ user.getId()   );
 //        });
-        return  userMapper.toDto(users);
+        return  userGetMapper.toDto(users);
     }
 
     @Override
