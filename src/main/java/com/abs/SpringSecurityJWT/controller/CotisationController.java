@@ -7,6 +7,8 @@ import com.abs.SpringSecurityJWT.enitty.Cotisation;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.CotisationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.header.Header;
@@ -34,8 +36,8 @@ public class CotisationController {
 
 
     @GetMapping("cotisations/list")
-    public ResponseEntity<List<CotisationDTO>> listCotisation(){
-        List<CotisationDTO> cotisationDTOList = cotisationService.listeCotisations();
+    public ResponseEntity<Page<CotisationDTO>> listCotisation(Pageable pageable){
+        Page<CotisationDTO> cotisationDTOList = cotisationService.listeCotisations(pageable);
 
         return new ResponseEntity<>(cotisationDTOList, HttpStatus.OK);
     }

@@ -15,6 +15,9 @@ import com.abs.SpringSecurityJWT.repository.CotisationRepo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,10 +74,12 @@ public class CotisationServiceImpl implements CotisationService{
     }
 
     @Override
-    public List<CotisationDTO> listeCotisations() {
-        List<Cotisation> cotisationList = cotisationRepo.findAll();
+    public Page<CotisationDTO> listeCotisations(Pageable pageable) {
 
-        return cotisationMapper.toDto(cotisationList);
+        Page<Cotisation> cotisationList = cotisationRepo.findAll(pageable);
+        Page<CotisationDTO> page  = new PageImpl<>(cotisationMapper.toDto(cotisationList.getContent()), pageable, cotisationList.getTotalElements());
+
+        return page;
     }
 
     @Override

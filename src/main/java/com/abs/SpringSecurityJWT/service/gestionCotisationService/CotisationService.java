@@ -5,6 +5,8 @@ import com.abs.SpringSecurityJWT.dto.HistoriqueCotisationDTO;
 import com.abs.SpringSecurityJWT.dto.StatistiqueCotisationDTO;
 import com.abs.SpringSecurityJWT.enitty.Cotisation;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -14,7 +16,7 @@ public interface CotisationService {
 
     CotisationDTO addCotisation(CotisationDTO cotisationDTO);
 
-    List<CotisationDTO> listeCotisations();
+    Page<CotisationDTO> listeCotisations(Pageable pageable);
 
     CotisationDTO detailCotisation(Long id);
 
