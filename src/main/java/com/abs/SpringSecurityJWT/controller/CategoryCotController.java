@@ -2,6 +2,7 @@ package com.abs.SpringSecurityJWT.controller;
 
 import com.abs.SpringSecurityJWT.dto.CategoryCotDTO;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.CategoryCotService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin")
 public class CategoryCotController {
 
-    @Autowired
-    private CategoryCotService categoryCotService;
+    private final CategoryCotService categoryCotService;
 
 
     @PostMapping("/category/added")

@@ -8,6 +8,7 @@ import com.abs.SpringSecurityJWT.enums.ETAT_EVENT;
 import com.abs.SpringSecurityJWT.mapper.EventMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.EventRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +17,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class EventServiceImpl implements EventService{
 
-    @Autowired
-    private EventRepo eventRepo;
+    private final EventRepo eventRepo;
 
-    @Autowired
-    private EventMapper eventMapper;
+    private final EventMapper eventMapper;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Override
     public EventDTO addEvent(EventDTO eventDTO) {

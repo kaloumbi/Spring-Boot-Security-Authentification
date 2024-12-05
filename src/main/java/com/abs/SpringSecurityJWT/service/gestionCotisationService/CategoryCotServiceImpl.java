@@ -7,6 +7,7 @@ import com.abs.SpringSecurityJWT.enums.ETAT_SHARED;
 import com.abs.SpringSecurityJWT.mapper.CategoryCotMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.CategoryCotRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,12 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class CategoryCotServiceImpl implements CategoryCotService {
 
-    @Autowired
-    private CategoryCotRepo categoryCotRepo;
+    private final CategoryCotRepo categoryCotRepo;
 
-    @Autowired
-    private CategoryCotMapper categoryCotMapper;
+    private final CategoryCotMapper categoryCotMapper;
 
 
     @Override

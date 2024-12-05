@@ -6,6 +6,7 @@ import com.abs.SpringSecurityJWT.dto.StatistiqueCotisationDTO;
 import com.abs.SpringSecurityJWT.enitty.Cotisation;
 import com.abs.SpringSecurityJWT.enums.ETAT_COTISATION;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.CotisationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +21,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("admin")
 public class CotisationController {
 
-    @Autowired
-    private CotisationService cotisationService;
+    private final CotisationService cotisationService;
 
     @PostMapping("cotisation/added")
     public ResponseEntity<CotisationDTO> addCotisation(@RequestBody CotisationDTO cotisationDTO){

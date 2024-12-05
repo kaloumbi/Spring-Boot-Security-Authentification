@@ -5,19 +5,19 @@ import com.abs.SpringSecurityJWT.enitty.Role;
 import com.abs.SpringSecurityJWT.mapper.RoleMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService{
     
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
     
-    @Autowired
-    private RoleMapper roleMapper;
+    private final RoleMapper roleMapper;
 
     @Override
     public RoleDTO creatRole(RoleDTO roleDTO) {

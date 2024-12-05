@@ -12,6 +12,7 @@ import com.abs.SpringSecurityJWT.mapper.CotisationMapper;
 import com.abs.SpringSecurityJWT.mapper.HistoriqueCotisationMapper;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.repository.CotisationRepo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,20 +33,17 @@ import java.util.Optional;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class CotisationServiceImpl implements CotisationService{
 
 
-    @Autowired
-    private CotisationRepo cotisationRepo;
+    private final CotisationRepo cotisationRepo;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private CotisationMapper cotisationMapper;
+    private final CotisationMapper cotisationMapper;
 
-    @Autowired
-    private HistoriqueCotisationMapper historiqueCotisationMapper;
+    private final HistoriqueCotisationMapper historiqueCotisationMapper;
 
     //VARIABLE POUR IMAGE PATH
     @Value("${file.path}")

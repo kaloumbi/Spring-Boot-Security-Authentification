@@ -14,6 +14,7 @@ import com.abs.SpringSecurityJWT.mapper.UserMapper;
 import com.abs.SpringSecurityJWT.repository.AssociationRepo;
 import com.abs.SpringSecurityJWT.repository.RoleRepository;
 import com.abs.SpringSecurityJWT.repository.UserRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,35 +27,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    @Autowired
-    private JWTUtils jwtUtils;
+    private final JWTUtils jwtUtils;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private AssociationRepo associationRepo;
+    private final AssociationRepo associationRepo;
 
     //Ajout d'un mapper //cotisation mapper
-    @Autowired
-    private RoleMapper roleMapper;
+    private final RoleMapper roleMapper;
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    @Autowired
-    private UserGetMapper userGetMapper;
+    private final UserGetMapper userGetMapper;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
 
 
@@ -130,7 +123,7 @@ public class AuthService {
             var jwt = jwtUtils.generateToken(user);
             var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
             response.setStatusCode(200);
-            response.setToken(jwt);
+            response.setToken(String.valueOf(jwt));
             response.setUsers(user); //j'ai ajouter ici un utilisateur !
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hr");
