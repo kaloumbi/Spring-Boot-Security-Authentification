@@ -1,8 +1,10 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
+import com.abs.SpringSecurityJWT.dto.GlobalException.DataResponse;
 import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enitty.User;
+import com.abs.SpringSecurityJWT.enums.CotisationError;
 import com.abs.SpringSecurityJWT.enums.ETAT_USER;
 import com.abs.SpringSecurityJWT.mapper.EventMapper;
 import com.abs.SpringSecurityJWT.mapper.UserGetMapper;
@@ -17,6 +19,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,13 +40,28 @@ public class UserServiceImpl implements UserService{
     private final EventRepo eventRepo;
 
     @Override
-    public List<UserGetDTO> listUsers(){
-        List<User> users = userRepo.findAll();
+    public DataResponse<List<UserGetDTO>> listUsers(){
 
-//        users.forEach(user -> {
-//          //  System.out.println("les events"+ user.getId()   );
-//        });
-        return  userGetMapper.toDto(users);
+        try {
+            log.info("Recuperation de la liste des utilisateurs... !");
+            List<User> users = userRepo.findAll();
+
+            // Verifier si la liste est vide
+            if (users.isEmpty()){
+                log.warn("Aucun utilisateur trouvé en base de donnée. ");
+                return new DataResponse<>(CotisationError.NOT_FOUND, false, Collections.emptyList());
+            }
+
+            // Mapper les entités User vers des DTO
+            List<UserGetDTO> userGetDTOS = userGetMapper.toDto(users);
+
+            return new DataResponse<>(CotisationError.OK, true, userGetDTOS);
+
+        }catch (Exception ex){
+            log.error("Erreur lors de la recuperation des utilisateurs : {}", ex.getCause(), ex);
+            return new DataResponse<>(500, "Erreur interne du serveur ", false, null);
+        }
+
     }
 
     @Override

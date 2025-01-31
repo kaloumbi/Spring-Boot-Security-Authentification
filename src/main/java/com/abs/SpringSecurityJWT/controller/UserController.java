@@ -1,12 +1,14 @@
 package com.abs.SpringSecurityJWT.controller;
 
 
+import com.abs.SpringSecurityJWT.dto.GlobalException.DataResponse;
 import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.myExeptions.MyNotFoundExceptionClass;
 import com.abs.SpringSecurityJWT.service.gestionCotisationService.UserService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("admin")
+@Log4j2
 public class UserController {
 
     private final UserService userService;
@@ -26,12 +29,19 @@ public class UserController {
      * ************* LISTER TOUS LES UTILISATEURS *********************
      */
     @GetMapping("/users")
-    ResponseEntity<List<UserGetDTO>> getAllUsers() throws Exception {
+    ResponseEntity<DataResponse<List<UserGetDTO>>> getAllUsers() throws Exception {
+
+        log.info("Requete reçu: GET /admin/users");
         // Appeler le service pour obtenir la liste des utilisateurs convertis en DTO
-        List<UserGetDTO> userListDto = userService.listUsers();
+        DataResponse<List<UserGetDTO>> userListDtoResponse = userService.listUsers();
+
+        //Verifie en cas d'erreur
+        if (! userListDtoResponse.getSuccess()){
+            return ResponseEntity.status(userListDtoResponse.getStatus()).body(userListDtoResponse);
+        }
 
         // Retourner la liste des DTO dans la réponse HTTP
-        return ResponseEntity.ok(userListDto);
+        return ResponseEntity.ok(userListDtoResponse);
     }
 
 

@@ -1,5 +1,6 @@
 package com.abs.SpringSecurityJWT.service.gestionCotisationService;
 
+import com.abs.SpringSecurityJWT.dto.GlobalException.DataResponse;
 import com.abs.SpringSecurityJWT.dto.UserGetDTO;
 import com.abs.SpringSecurityJWT.dto.UserReqResDTO;
 import com.abs.SpringSecurityJWT.enitty.User;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface UserService {
 
 
-    List<UserGetDTO> listUsers();
+    DataResponse<List<UserGetDTO>> listUsers();
 
     UserReqResDTO updateUser(Long id, UserReqResDTO userReqResDTO);
 
