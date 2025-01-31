@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService{
 
         }catch (Exception ex){
             log.error("Erreur lors de la recuperation des utilisateurs : {}", ex.getCause(), ex);
-            return new DataResponse<>(CotisationError.INTERNAL_SERVER_ERROR.getCode(), "Erreur interne du serveur ", false, null);
+            return new DataResponse<>(CotisationError.INTERNAL_SERVER_ERROR.getCode(), CotisationError.INTERNAL_SERVER_ERROR.getMessage(), false, null);
         }
 
     }
